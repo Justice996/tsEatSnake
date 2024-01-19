@@ -24,8 +24,19 @@ class Snake {
            throw new Error("蛇死了");
            
         }
+
+        //禁止反方向移动
+        if(this.bodies[1] && (this.bodies[1] as HTMLElement).offsetLeft === value){
+            if(value>this.X){
+                value = this.X-10;
+            }else{
+                value = this.X+10
+            }
+        }
+
         this.moveBody();
         this.head.style.left = value+'px'
+        this.checkHeadBody();
     }
 
     set Y(value:number){
@@ -35,8 +46,17 @@ class Snake {
         if(value<0 || value>290){
             throw new Error("蛇死了");
          }
+         //禁止反方向移动
+        if(this.bodies[1] && (this.bodies[1] as HTMLElement).offsetTop === value){
+            if(value>this.Y){
+                value = this.Y-10;
+            }else{
+                value = this.Y+10
+            }
+        }
         this.moveBody();
         this.head.style.top = value+'px'
+        this.checkHeadBody();
     }
 
     //蛇增加身体
@@ -53,6 +73,16 @@ class Snake {
         (this.bodies[i] as HTMLElement).style.top = Y+"px";
 
       }
+    }
+   // 检查头是否撞到身体
+    checkHeadBody(){
+        
+        for(let i = 1;i<this.bodies.length;i++){
+            let bd = this.bodies[i] as HTMLElement;
+            if(this.X === bd.offsetLeft && this.Y === bd.offsetTop){
+                throw new Error('撞死了');
+            }
+        }
     }
 }   
 
